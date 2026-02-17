@@ -3,258 +3,1200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uplodify - Upload smarter. Grow faster.</title>
-    <link rel="stylesheet" href="style.css">
+    <title>CheckIn30 · Streak Rewards System</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --primary-bg: #eff6ff;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --error: #dc2626;
+            --error-bg: #fee2e2;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --text-muted: #94a3b8;
+            --background: #ffffff;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.02);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.02);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.02);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.02);
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            background: var(--primary-bg);
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-bg);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: var(--success);
+            opacity: 0.9;
+        }
+
+        /* Profile */
+        .profile-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-circle {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+        }
+
+        .dropdown.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--primary);
+        }
+
+        .dropdown-edit, .dropdown-logout {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dropdown-edit:hover {
+            background: var(--primary-bg);
+        }
+
+        .dropdown-logout:hover {
+            background: var(--error-bg);
+            color: var(--error);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-light);
+            margin: 30px 0;
+        }
+
+        /* Timer */
+        .timer-display {
+            font-size: 80px;
+            font-family: monospace;
+            font-weight: 700;
+            text-align: center;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--border-light);
+            border-radius: 50px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transition: width 0.3s;
+        }
+
+        .timer-message {
+            text-align: center;
+            font-size: 18px;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        /* Streak */
+        .streak-number {
+            font-size: 100px;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            line-height: 1;
+            margin: 20px 0;
+        }
+
+        .streak-dots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 30px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .streak-dot {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .streak-dot.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .streak-dot.milestone {
+            border: 2px solid gold;
+        }
+
+        /* Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .popup-card {
+            background: white;
+            border-radius: 40px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .popup-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .popup-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .popup-streak {
+            font-size: 50px;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .modal-card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .success-message {
+            background: var(--success-bg);
+            color: var(--success);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        /* Telegram */
+        .telegram-section {
+            background: linear-gradient(135deg, var(--primary-bg), white);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .telegram-icon {
+            font-size: 60px;
+            color: #0088cc;
+            margin-bottom: 20px;
+        }
+
+        .telegram-button {
+            display: inline-block;
+            background: #0088cc;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .telegram-button:hover {
+            background: #0077b5;
+        }
+
+        .first-reward-badge {
+            background: linear-gradient(135deg, gold, #fbbf24);
+            color: var(--text-dark);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .timer-display {
+                font-size: 60px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- LOGIN SECTION (default visible) -->
-    <section id="loginSection" class="section active">
-        <div class="app-header">
-            <h1 class="app-name">Uplodify</h1>
-        </div>
-        
-        <div class="form-container">
-            <h1 id="loginTitle">Welcome back</h1>
-            <p class="tagline">Upload smarter. Grow faster.</p>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <input type="email" id="loginEmail" placeholder="Email" required>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" id="loginPassword" placeholder="Password" required>
-                </div>
-                
-                <button type="button" id="loginBtn" class="btn-primary">Log In</button>
-            </form>
-            
-            <div class="action-links">
-                <button type="button" id="goRegisterBtn" class="btn-text">Create new account</button>
-                <button type="button" id="goForgotBtn" class="btn-text">Forgot password?</button>
+    <!-- Streak Popup -->
+    <div class="popup-overlay" id="streakPopup">
+        <div class="popup-card">
+            <div class="popup-icon">🔥</div>
+            <div class="popup-title">Streak Updated!</div>
+            <div class="popup-streak" id="popupStreak">0</div>
+            <div class="popup-message" id="popupMessage">Keep going! Your streak is growing!</div>
+            <div id="popupMilestone" style="color: gold; font-weight: bold; margin: 10px 0; display: none;">
+                🎉 Milestone Reached! 🎉
             </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="claimStreak()">Continue</button>
         </div>
-    </section>
+    </div>
 
-    <!-- REGISTER SECTION (hidden) -->
-    <section id="registerSection" class="section">
-        <div class="form-container">
-            <h1 id="registerTitle">Create account</h1>
-            <p class="tagline">Upload smarter. Grow faster.</p>
-            
-            <form id="registerForm">
-                <div class="form-group">
-                    <input type="email" id="registerEmail" placeholder="Email" required>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" id="registerPassword" placeholder="Password" required>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-                </div>
-                
-                <button type="button" id="registerBtn" class="btn-primary">Create Account</button>
-            </form>
-            
-            <div class="action-links">
-                <button type="button" id="goLoginBtn" class="btn-text">Already have an account? Log in</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- PERMISSION SECTION (hidden) -->
-    <section id="permissionSection" class="section">
-        <div class="form-container">
-            <h1 id="permissionTitle">Permissions Needed</h1>
-            
-            <div class="info-text">
-                <p>To provide the best experience, Uplodify needs the following permissions:</p>
-            </div>
-            
-            <div class="permission-options">
-                <button type="button" id="allowNotificationBtn" class="btn-secondary">Allow Notifications</button>
-                <button type="button" id="allowMediaBtn" class="btn-secondary">Allow Camera & Microphone</button>
-            </div>
-            
-            <button type="button" id="continueBtn" class="btn-primary">Continue</button>
-        </div>
-    </section>
-
-    <!-- HOME SECTION (hidden) -->
-    <section id="homeSection" class="section">
-        <div class="app-header">
-            <h1 class="app-name">Uplodify</h1>
-        </div>
-        
-        <div class="stats-container">
-            <h2 class="section-title">Your Stats</h2>
-            
-            <div class="stats-grid">
-                <div class="stat-card" id="totalVideosCard">
-                    <h3 class="stat-title">Total Videos</h3>
-                    <p class="stat-value">0</p>
-                </div>
-                
-                <div class="stat-card" id="lastVideoViewsCard">
-                    <h3 class="stat-title">Last Video Views</h3>
-                    <p class="stat-value">0</p>
-                </div>
-                
-                <div class="stat-card" id="sevenDaysViewsCard">
-                    <h3 class="stat-title">7-Day Views</h3>
-                    <p class="stat-value">0</p>
-                </div>
-                
-                <div class="stat-card" id="totalViewsCard">
-                    <h3 class="stat-title">Total Views</h3>
-                    <p class="stat-value">0</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <button type="button" id="navHome" class="nav-btn active">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-text">Home</span>
-            </button>
-            
-            <button type="button" id="navUpload" class="nav-btn">
-                <span class="nav-icon">⬆️</span>
-                <span class="nav-text">Upload</span>
-            </button>
-            
-            <button type="button" id="navAI" class="nav-btn">
-                <span class="nav-icon">🤖</span>
-                <span class="nav-text">AI</span>
-            </button>
-            
-            <button type="button" id="navGroup" class="nav-btn">
-                <span class="nav-icon">👥</span>
-                <span class="nav-text">Group</span>
-            </button>
-            
-            <button type="button" id="navProfile" class="nav-btn">
-                <span class="nav-icon">👤</span>
-                <span class="nav-text">Profile</span>
-            </button>
-        </nav>
-    </section>
-
-    <!-- UPLOAD SECTION (hidden) -->
-    <section id="uploadSection" class="section">
-        <div class="section-header">
-            <h1 class="section-title">Upload Video</h1>
-            <button type="button" id="backHomeFromUpload" class="btn-back">← Back</button>
-        </div>
-        
-        <div class="upload-container">
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-card">
+            <h2>Login to CheckIn30</h2>
             <div class="form-group">
-                <label for="videoInput" class="file-label">Choose Video File</label>
-                <input type="file" id="videoInput" accept="video/*" class="file-input">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="your@email.com">
             </div>
-            
             <div class="form-group">
-                <label for="platformSelect" class="select-label">Select Platform</label>
-                <select id="platformSelect" class="select-input">
-                    <option value="youtube">YouTube</option>
-                    <option value="tiktok">TikTok</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="facebook">Facebook</option>
-                </select>
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="......">
             </div>
-            
-            <button type="button" id="generateCaptionBtn" class="btn-secondary">Generate AI Caption</button>
-            
-            <div class="form-group">
-                <label for="captionBox" class="textarea-label">Video Caption</label>
-                <textarea id="captionBox" placeholder="Write or paste your video caption here..." rows="6"></textarea>
+            <div class="checkbox-group">
+                <input type="checkbox" id="loginKeep">
+                <label>Keep me logged in</label>
             </div>
-            
-            <button type="button" id="openUploadPageBtn" class="btn-primary">Open Upload Page</button>
+            <div class="success-message" id="loginSuccess">Login Successful!</div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="login()">Login</button>
+            <p style="text-align: center; margin-top: 20px;">
+                Don't have account? <a href="#" onclick="showRegister()">Register</a>
+            </p>
         </div>
-    </section>
+    </div>
 
-    <!-- AI SECTION (hidden) -->
-    <section id="aiSection" class="section">
-        <div class="section-header">
-            <h1 class="section-title">AI Assistant</h1>
-            <button type="button" id="backHomeFromAI" class="btn-back">← Back</button>
-        </div>
-        
-        <div class="ai-container">
-            <div class="info-text">
-                <p>Ask our AI assistant for help with video ideas, captions, hashtags, or optimization tips.</p>
-            </div>
-            
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal-card">
+            <h2>Join CheckIn30</h2>
+            <p style="text-align: center; color: var(--primary); margin-bottom: 20px;">
+                ⭐ First reward within 24 hours! ⭐
+            </p>
             <div class="form-group">
-                <input type="text" id="aiUserInput" placeholder="Ask AI for help with your content...">
+                <label>Full Name</label>
+                <input type="text" id="regName" placeholder="Your Name">
             </div>
-            
-            <button type="button" id="sendAiMsgBtn" class="btn-primary">Ask AI</button>
-            
-            <div class="ai-response-container">
-                <div id="aiResponseBox" class="ai-response-box">
-                    <p>AI responses will appear here...</p>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+                <label>UPI ID</label>
+                <input type="text" id="regUpi" placeholder="yourupi@okhdfcbank">
+            </div>
+            <div class="form-group">
+                <label>Password (min 6)</label>
+                <input type="password" id="regPassword" placeholder="......">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="regKeep">
+                <label>Keep me logged in</label>
+            </div>
+            <div class="success-message" id="registerSuccess">Registration Successful!</div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="register()">Create Account</button>
+            <p style="text-align: center; margin-top: 20px;">
+                Already have account? <a href="#" onclick="showLogin()">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-card">
+            <h2>Edit Profile</h2>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="editName">
+            </div>
+            <div class="form-group">
+                <label>UPI ID</label>
+                <input type="text" id="editUpi">
+            </div>
+            <div class="success-message" id="editSuccess">Profile Updated!</div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveProfile()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-calendar-check"></i>
+                CheckIn30
+            </div>
+
+            <!-- Auth Buttons -->
+            <div id="authButtons">
+                <button class="btn btn-outline" onclick="showLogin()">Login</button>
+                <button class="btn btn-primary" onclick="showRegister()" style="margin-left: 10px;">Register</button>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profileSection" style="display: none;" class="profile-wrapper">
+                <span class="profile-name" id="headerName"></span>
+                <div class="profile-circle" onclick="toggleDropdown()" id="profileCircle">U</div>
+                
+                <div class="dropdown" id="dropdown">
+                    <div class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        <span id="dropName"></span>
+                    </div>
+                    <div class="dropdown-item">
+                        <i class="fas fa-envelope"></i>
+                        <span id="dropEmail"></span>
+                    </div>
+                    <div class="dropdown-item">
+                        <i class="fas fa-fire"></i>
+                        <span>Streak: <span id="dropStreak">0</span> days</span>
+                    </div>
+                    <div class="dropdown-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Total: <span id="dropTotal">0</span> visits</span>
+                    </div>
+                    <div class="dropdown-item">
+                        <i class="fas fa-qrcode"></i>
+                        <span>UPI: <span id="dropUpi"></span></span>
+                    </div>
+                    <div class="dropdown-item">
+                        <i class="fas fa-gift"></i>
+                        <span>Rewards: <span id="dropRewards">0</span></span>
+                    </div>
+                    <div class="dropdown-divider" style="height: 1px; background: var(--border); margin: 10px 0;"></div>
+                    <div class="dropdown-edit" onclick="showEditModal()">
+                        <i class="fas fa-pen"></i>
+                        Edit Profile
+                    </div>
+                    <div class="dropdown-logout" onclick="logout()">
+                        <i class="fas fa-sign-out"></i>
+                        Logout
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
-    <!-- GROUP SECTION (hidden) -->
-    <section id="groupSection" class="section">
-        <div class="section-header">
-            <h1 class="section-title">Group</h1>
-            <button type="button" id="backHomeFromGroup" class="btn-back">← Back</button>
-        </div>
-        
-        <div class="group-container">
-            <div id="groupWarning" class="warning-box">
-                <p><strong>Important Rule:</strong> You must watch group videos regularly. If you don't, your videos will not be shared.</p>
-                <button type="button" id="acceptGroupRuleBtn" class="btn-secondary">I Understand</button>
-            </div>
-            
-            <h2 class="section-subtitle">Group Videos</h2>
-            <div id="groupVideoList" class="video-list">
-                <!-- Video items will be dynamically added here -->
-                <div class="video-item">
-                    <p class="video-title">Group video 1</p>
-                    <button type="button" class="btn-watch">Watch on YouTube</button>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Home Page -->
+        <div id="homePage">
+            <div class="card" style="text-align: center;">
+                <h1 style="font-size: 48px; margin-bottom: 20px;">Daily Streak Rewards</h1>
+                <p style="font-size: 20px; color: var(--primary);">Jitni lambi streak, utna bada reward</p>
+                
+                <div class="first-reward-badge">
+                    ⭐ First reward within 24 hours! ⭐
+                </div>
+                
+                <div style="display: flex; justify-content: center; gap: 50px; margin: 40px 0;">
+                    <div>
+                        <div style="font-size: 40px; font-weight: 800; color: var(--primary);">1 min</div>
+                        <div>Daily Time</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 40px; font-weight: 800; color: var(--primary);">∞</div>
+                        <div>Unlimited Streak</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- PROFILE SECTION (hidden) -->
-    <section id="profileSection" class="section">
-        <div class="section-header">
-            <h1 class="section-title">Profile</h1>
-        </div>
-        
-        <div class="profile-container">
-            <div class="profile-info">
-                <div class="profile-avatar">
-                    <div class="avatar-placeholder">U</div>
+            <div class="card">
+                <h2>How It Works</h2>
+                <div style="display: grid; gap: 15px;">
+                    <div>1. Register with your name, email and UPI ID</div>
+                    <div>2. First reward guaranteed within 24 hours</div>
+                    <div>3. Visit daily - timer starts automatically</div>
+                    <div>4. Complete 1 minute and claim your streak</div>
+                    <div>5. Every 5 days = Special milestone reward</div>
+                    <div>6. Streak continues forever beyond 30 days</div>
                 </div>
-                <h2 id="profileUserName" class="profile-name">User Name</h2>
-                <p id="profileUserEmail" class="profile-email">user@example.com</p>
             </div>
-            
-            <div class="profile-actions">
-                <button type="button" id="editProfileBtn" class="profile-btn">Edit Profile</button>
-                <button type="button" id="connectionsBtn" class="profile-btn">Connections</button>
-                <button type="button" id="uploadHistoryBtn" class="profile-btn">Upload History</button>
-                <button type="button" id="privacyBtn" class="profile-btn">Privacy Settings</button>
-                <button type="button" id="logoutBtn" class="profile-btn logout-btn">Log Out</button>
-                <button type="button" id="deleteAccountBtn" class="profile-btn delete-btn">Delete Account</button>
+
+            <!-- Connect with gotmprajapat00@gmail.com -->
+            <div class="telegram-section">
+                <i class="fas fa-envelope telegram-icon" style="color: var(--primary);"></i>
+                <h2>Connect With Us</h2>
+                <p style="font-size: 20px; font-weight: 600; color: var(--primary);">
+                    gotmprajapat00@gmail.com
+                </p>
+                <p>For support and queries</p>
+                <a href="https://t.me/chackin30" target="_blank" class="telegram-button">
+                    <i class="fab fa-telegram"></i> Join @chackin30 on Telegram
+                </a>
+                <p style="margin-top: 15px;">Get updates about your streak and rewards</p>
             </div>
         </div>
-    </section>
 
-    <!-- External scripts -->
-    <script src="firebase.js"></script>
-    <script src="app.js"></script>
+        <!-- Dashboard -->
+        <div id="dashboard" style="display: none;">
+            <!-- Timer -->
+            <div class="card" style="text-align: center;">
+                <h2>Today's Visit</h2>
+                <div class="timer-display" id="timerDisplay">01:00</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="timer-message" id="timerMessage">
+                    Timer starts automatically...
+                </div>
+            </div>
+
+            <!-- Streak -->
+            <div class="card" style="text-align: center;">
+                <h2>Your Streak</h2>
+                <div class="streak-number" id="streakDisplay">0</div>
+                <div class="streak-dots" id="streakDots"></div>
+                <div id="unlimitedBadge" style="color: var(--primary); font-weight: 600; display: none;">
+                    <i class="fas fa-infinity"></i> Unlimited Streak Mode
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Your Stats</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                            <span>Total Visits:</span>
+                            <span style="font-weight: 700; color: var(--primary);" id="totalVisits">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                            <span>Rewards Earned:</span>
+                            <span style="font-weight: 700; color: var(--primary);" id="totalRewards">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                            <span>Member Since:</span>
+                            <span id="memberSince">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Next Milestone</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                            <span>Next 5-day:</span>
+                            <span style="font-weight: 700; color: var(--primary);" id="nextMilestone">5 days</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                            <span>First Reward:</span>
+                            <span style="font-weight: 700; color: var(--success);">Within 24h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Telegram -->
+            <div class="telegram-section">
+                <i class="fab fa-telegram telegram-icon"></i>
+                <h3>Get Updates on Telegram</h3>
+                <p>Your streak milestones will be sent here</p>
+                <a href="https://t.me/chackin30" target="_blank" class="telegram-button">
+                    <i class="fab fa-telegram"></i> Join @chackin30
+                </a>
+                <p style="margin-top: 10px; color: var(--text-muted);">
+                    Connect: gotmprajapat00@gmail.com
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfzHHptzdqh178Or8hNNyF642NuHxNLjg",
+            authDomain: "chackin30.firebaseapp.com",
+            databaseURL: "https://chackin30-default-rtdb.firebaseio.com",
+            projectId: "chackin30",
+            storageBucket: "chackin30.firebasestorage.app",
+            messagingSenderId: "789981582387",
+            appId: "1:789981582387:web:46716df5b4154c18d37f46"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // ==================== TELEGRAM ====================
+        const BOT_TOKEN = "8367971417:AAGkV30ajQdWKjM-5AQDxYZH19OPHI51HGM";
+        const CHAT_ID = "6225430212";
+
+        async function sendTelegram(message) {
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (e) {
+                console.log('Telegram error:', e);
+            }
+        }
+
+        // Test on load
+        sendTelegram('✅ <b>CheckIn30 Started</b>\nConnect: gotmprajapat00@gmail.com');
+
+        // ==================== GLOBAL VARIABLES ====================
+        let currentUser = null;
+        let currentData = null;
+        let timerInterval = null;
+        let timerSeconds = 60;
+        let timerActive = false;
+
+        // DOM Elements
+        const homePage = document.getElementById('homePage');
+        const dashboard = document.getElementById('dashboard');
+        const authButtons = document.getElementById('authButtons');
+        const profileSection = document.getElementById('profileSection');
+        const dropdown = document.getElementById('dropdown');
+        const streakPopup = document.getElementById('streakPopup');
+
+        // ==================== MODAL FUNCTIONS ====================
+        function showLogin() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('loginSuccess').style.display = 'none';
+        }
+
+        function showRegister() {
+            document.getElementById('registerModal').style.display = 'flex';
+            document.getElementById('registerSuccess').style.display = 'none';
+        }
+
+        function showEditModal() {
+            if (currentData) {
+                document.getElementById('editName').value = currentData.name || '';
+                document.getElementById('editUpi').value = currentData.upiId || '';
+                document.getElementById('editModal').style.display = 'flex';
+                document.getElementById('editSuccess').style.display = 'none';
+                dropdown.classList.remove('show');
+            }
+        }
+
+        function closeModals() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'none';
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModals();
+            }
+            if (e.target === streakPopup) {
+                streakPopup.style.display = 'none';
+            }
+        }
+
+        function toggleDropdown() {
+            dropdown.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!profileSection.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // ==================== AUTH FUNCTIONS ====================
+        async function register() {
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const upi = document.getElementById('regUpi').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const keep = document.getElementById('regKeep').checked;
+
+            if (!name || !email || !upi || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+
+            try {
+                if (keep) {
+                    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                }
+
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                const userData = {
+                    name: name,
+                    email: email,
+                    upiId: upi,
+                    streak: 0,
+                    totalVisits: 0,
+                    registeredAt: new Date().toISOString(),
+                    lastVisit: null,
+                    rewardsReceived: 0,
+                    visits: {},
+                    milestones: {}
+                };
+
+                await db.ref('users/' + user.uid).set(userData);
+
+                // Show success message
+                document.getElementById('registerSuccess').style.display = 'block';
+                
+                // Send Telegram
+                await sendTelegram(
+                    '🟢 <b>NEW REGISTRATION</b>\n' +
+                    '━━━━━━━━━━━━━━━━━━\n' +
+                    '👤 Name: ' + name + '\n' +
+                    '📧 Email: ' + email + '\n' +
+                    '💰 UPI: ' + upi + '\n' +
+                    '⏰ Time: ' + new Date().toLocaleString() + '\n' +
+                    '━━━━━━━━━━━━━━━━━━\n' +
+                    '🎁 First reward within 24h'
+                );
+
+                // Close modal after 1.5 seconds
+                setTimeout(() => {
+                    closeModals();
+                }, 1500);
+
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const keep = document.getElementById('loginKeep').checked;
+
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+
+            try {
+                if (keep) {
+                    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                }
+
+                await auth.signInWithEmailAndPassword(email, password);
+
+                // Show success message
+                document.getElementById('loginSuccess').style.display = 'block';
+
+                // Send Telegram
+                await sendTelegram(
+                    '🔵 <b>LOGIN</b>\n' +
+                    '━━━━━━━━━━━━\n' +
+                    '👤 ' + email + '\n' +
+                    '⏰ ' + new Date().toLocaleString()
+                );
+
+                // Close modal after 1.5 seconds
+                setTimeout(() => {
+                    closeModals();
+                }, 1500);
+
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function logout() {
+            await auth.signOut();
+            dropdown.classList.remove('show');
+        }
+
+        async function saveProfile() {
+            const newName = document.getElementById('editName').value.trim();
+            const newUpi = document.getElementById('editUpi').value.trim();
+
+            if (!newName || !newUpi) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            try {
+                await db.ref('users/' + currentUser.uid).update({
+                    name: newName,
+                    upiId: newUpi
+                });
+
+                document.getElementById('editSuccess').style.display = 'block';
+
+                await sendTelegram(
+                    '✏️ <b>PROFILE UPDATED</b>\n' +
+                    '━━━━━━━━━━━━━━━━━━\n' +
+                    '👤 New Name: ' + newName + '\n' +
+                    '💰 New UPI: ' + newUpi + '\n' +
+                    '⏰ ' + new Date().toLocaleString()
+                );
+
+                setTimeout(() => {
+                    closeModals();
+                }, 1500);
+
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // ==================== AUTH STATE ====================
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                authButtons.style.display = 'none';
+                profileSection.style.display = 'flex';
+                homePage.style.display = 'none';
+                dashboard.style.display = 'block';
+
+                db.ref('users/' + user.uid).on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        currentData = data;
+                        updateUI(data);
+                        checkAndStartTimer(data);
+                    }
+                });
+
+            } else {
+                currentUser = null;
+                currentData = null;
+                authButtons.style.display = 'flex';
+                profileSection.style.display = 'none';
+                homePage.style.display = 'block';
+                dashboard.style.display = 'none';
+                
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerActive = false;
+                }
+            }
+        });
+
+        // ==================== UI UPDATE ====================
+        function updateUI(data) {
+            // Profile
+            profileCircle.innerText = data.name ? data.name.charAt(0).toUpperCase() : 'U';
+            headerName.innerText = data.name || '';
+            
+            // Dropdown
+            dropName.innerText = data.name || '';
+            dropEmail.innerText = data.email || '';
+            dropStreak.innerText = data.streak || 0;
+            dropTotal.innerText = data.totalVisits || 0;
+            dropUpi.innerText = data.upiId || '';
+            dropRewards.innerText = data.rewardsReceived || 0;
+            
+            // Streak
+            streakDisplay.innerText = data.streak || 0;
+            
+            // Unlimited badge
+            if (data.streak >= 30) {
+                document.getElementById('unlimitedBadge').style.display = 'block';
+            }
+
+            // Streak dots
+            updateStreakDots(data);
+
+            // Stats
+            totalVisits.innerText = data.totalVisits || 0;
+            totalRewards.innerText = data.rewardsReceived || 0;
+            if (data.registeredAt) {
+                memberSince.innerText = new Date(data.registeredAt).toLocaleDateString();
+            }
+
+            // Next milestone
+            const streak = data.streak || 0;
+            const nextMilestone = Math.ceil((streak + 1) / 5) * 5;
+            document.getElementById('nextMilestone').innerText = nextMilestone + ' days';
+        }
+
+        function updateStreakDots(data) {
+            const streak = data.streak || 0;
+            const showDots = Math.max(30, streak + 5);
+            const dotsContainer = document.getElementById('streakDots');
+            dotsContainer.innerHTML = '';
+
+            for (let i = 1; i <= showDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'streak-dot';
+                
+                if (i <= streak) {
+                    dot.classList.add('active');
+                }
+                
+                if (i % 5 === 0) {
+                    dot.classList.add('milestone');
+                }
+                
+                if (i > 30) {
+                    dot.innerText = '→';
+                } else {
+                    dot.innerText = i;
+                }
+                
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // ==================== TIMER ====================
+        function checkAndStartTimer(data) {
+            const today = new Date().toDateString();
+            
+            if (data.lastVisit && new Date(data.lastVisit).toDateString() === today) {
+                timerActive = false;
+                if (timerInterval) clearInterval(timerInterval);
+                timerDisplay.innerText = '00:00';
+                progressFill.style.width = '100%';
+                timerMessage.innerText = '✅ Already visited today';
+                return;
+            }
+
+            startTimer();
+        }
+
+        function startTimer() {
+            if (timerActive) return;
+            
+            timerSeconds = 60;
+            timerActive = true;
+            
+            timerDisplay.innerText = '01:00';
+            progressFill.style.width = '0%';
+            timerMessage.innerText = '⏳ Timer running...';
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                
+                const mins = Math.floor(timerSeconds / 60);
+                const secs = timerSeconds % 60;
+                timerDisplay.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                
+                const progress = ((60 - timerSeconds) / 60) * 100;
+                progressFill.style.width = progress + '%';
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerActive = false;
+                    timerDisplay.innerText = '00:00';
+                    progressFill.style.width = '100%';
+                    timerMessage.innerText = '✅ Time complete!';
+                    
+                    showStreakPopup();
+                }
+            }, 1000);
+        }
+
+        // ==================== STREAK FUNCTIONS ====================
+        function showStreakPopup() {
+            const today = new Date().toDateString();
+            
+            if (currentData && currentData.lastVisit && new Date(currentData.lastVisit).toDateString() === today) {
+                return;
+            }
+
+            const newStreak = (currentData?.streak || 0) + 1;
+            
+            document.getElementById('popupStreak').innerText = newStreak;
+            
+            if (newStreak % 5 === 0) {
+                document.getElementById('popupMessage').innerText = `🎉 Day ${newStreak} Milestone! Special reward!`;
+                document.getElementById('popupMilestone').style.display = 'block';
+            } else {
+                document.getElementById('popupMessage').innerText = 'Keep going! Your streak is growing!';
+                document.getElementById('popupMilestone').style.display = 'none';
+            }
+            
+            streakPopup.style.display = 'flex';
+        }
+
+        async function claimStreak() {
+            if (!currentUser || !currentData) {
+                streakPopup.style.display = 'none';
+                return;
+            }
+
+            const today = new Date().toDateString();
+            
+            if (currentData.lastVisit && new Date(currentData.lastVisit).toDateString() === today) {
+                streakPopup.style.display = 'none';
+                return;
+            }
+
+            const newStreak = (currentData.streak || 0) + 1;
+            const updates = {
+                streak: newStreak,
+                totalVisits: (currentData.totalVisits || 0) + 1,
+                lastVisit: new Date().toISOString()
+            };
+
+            // Add visit record
+            const todayDate = new Date().toISOString().split('T')[0];
+            updates[`visits/${todayDate}`] = true;
+
+            // Check for milestone (every 5 days)
+            if (newStreak % 5 === 0) {
+                updates.rewardsReceived = (currentData.rewardsReceived || 0) + 1;
+                updates[`milestones/${newStreak}`] = {
+                    date: new Date().toISOString(),
+                    streak: newStreak
+                };
+
+                // Send Telegram for milestone
+                await sendTelegram(
+                    '🎯 <b>STREAK MILESTONE</b>\n' +
+                    '━━━━━━━━━━━━━━━━━━\n' +
+                    '👤 Name: ' + currentData.name + '\n' +
+                    '🔥 Streak: ' + newStreak + ' Days\n' +
+                    '📧 Email: ' + currentData.email + '\n' +
+                    '💰 UPI: ' + currentData.upiId + '\n' +
+                    '🎁 Milestone Reward\n' +
+                    '⏰ ' + new Date().toLocaleString() + '\n' +
+                    '━━━━━━━━━━━━━━━━━━'
+                );
+            }
+
+            // Update database
+            await db.ref('users/' + currentUser.uid).update(updates);
+            
+            // Close popup
+            streakPopup.style.display = 'none';
+            
+            // Update timer message
+            timerMessage.innerText = '✅ Streak updated for today!';
+        }
+    </script>
 </body>
 </html>
