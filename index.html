@@ -431,6 +431,26 @@
             margin: 20px 0;
         }
 
+        /* Footer Links */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
         /* Grid */
         .grid-2 {
             display: grid;
@@ -476,7 +496,7 @@
                 <input type="password" id="loginPassword" placeholder="......">
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="loginKeep">
+                <input type="checkbox" id="loginKeep" checked>
                 <label>Keep me logged in</label>
             </div>
             <div class="success-message" id="loginSuccess">Login Successful!</div>
@@ -511,7 +531,7 @@
                 <input type="password" id="regPassword" placeholder="......">
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="regKeep">
+                <input type="checkbox" id="regKeep" checked>
                 <label>Keep me logged in</label>
             </div>
             <div class="success-message" id="registerSuccess">Registration Successful!</div>
@@ -633,18 +653,21 @@
                 </div>
             </div>
 
-            <!-- Connect with gotmprajapat00@gmail.com -->
+            <!-- Telegram Section - Separate and Above -->
             <div class="telegram-section">
-                <i class="fas fa-envelope telegram-icon" style="color: var(--primary);"></i>
-                <h2>Connect With Us</h2>
-                <p style="font-size: 20px; font-weight: 600; color: var(--primary);">
-                    gotmprajapat00@gmail.com
-                </p>
-                <p>For support and queries</p>
+                <i class="fab fa-telegram telegram-icon"></i>
+                <h2>Join Our Telegram Channel</h2>
+                <p>Get instant updates about your streak and milestone rewards</p>
                 <a href="https://t.me/chackin30" target="_blank" class="telegram-button">
-                    <i class="fab fa-telegram"></i> Join @chackin30 on Telegram
+                    <i class="fab fa-telegram"></i> Join @chackin30
                 </a>
-                <p style="margin-top: 15px;">Get updates about your streak and rewards</p>
+                <p style="margin-top: 15px;">All notifications will be sent here</p>
+            </div>
+
+            <!-- Footer Links - Terms and Connect Us at Bottom -->
+            <div class="footer-links">
+                <a href="#" onclick="showTerms()">Terms & Conditions</a>
+                <a href="#" onclick="showConnect()">Connect Us</a>
             </div>
         </div>
 
@@ -707,7 +730,7 @@
                 </div>
             </div>
 
-            <!-- Telegram -->
+            <!-- Telegram Section in Dashboard -->
             <div class="telegram-section">
                 <i class="fab fa-telegram telegram-icon"></i>
                 <h3>Get Updates on Telegram</h3>
@@ -715,35 +738,50 @@
                 <a href="https://t.me/chackin30" target="_blank" class="telegram-button">
                     <i class="fab fa-telegram"></i> Join @chackin30
                 </a>
-                <p style="margin-top: 10px; color: var(--text-muted);">
-                    Connect: gotmprajapat00@gmail.com
-                </p>
+            </div>
+
+            <!-- Footer Links in Dashboard -->
+            <div class="footer-links">
+                <a href="#" onclick="showTerms()">Terms & Conditions</a>
+                <a href="#" onclick="showConnect()">Connect Us</a>
             </div>
         </div>
     </main>
 
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <!-- Terms Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-card">
+            <h2>Terms & Conditions</h2>
+            <div style="margin: 20px 0; max-height: 300px; overflow-y: auto;">
+                <p>1. By using CheckIn30, you agree to these terms.</p>
+                <p>2. You must be 18+ to use this service.</p>
+                <p>3. Rewards are processed within 24 hours of milestone achievement.</p>
+                <p>4. We are not responsible for incorrect UPI details.</p>
+                <p>5. Streak resets if you miss a day.</p>
+                <p>6. One account per user only.</p>
+                <p>7. We reserve the right to modify terms anytime.</p>
+                <p>8. For support, contact via Telegram.</p>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="closeModal('termsModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- Connect Us Modal -->
+    <div class="modal-overlay" id="connectModal">
+        <div class="modal-card">
+            <h2>Connect Us</h2>
+            <div style="margin: 30px 0; text-align: center;">
+                <i class="fas fa-envelope" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
+                <p style="font-size: 20px; font-weight: 600; color: var(--primary);">gotmprajapat00@gmail.com</p>
+                <p style="margin-top: 20px;">For any queries or support</p>
+                <p>Response within 24 hours</p>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="closeModal('connectModal')">Close</button>
+        </div>
+    </div>
 
     <script>
-        // ==================== FIREBASE CONFIG ====================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDfzHHptzdqh178Or8hNNyF642NuHxNLjg",
-            authDomain: "chackin30.firebaseapp.com",
-            databaseURL: "https://chackin30-default-rtdb.firebaseio.com",
-            projectId: "chackin30",
-            storageBucket: "chackin30.firebasestorage.app",
-            messagingSenderId: "789981582387",
-            appId: "1:789981582387:web:46716df5b4154c18d37f46"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
-
-        // ==================== TELEGRAM ====================
+        // ==================== TELEGRAM BOT ====================
         const BOT_TOKEN = "8367971417:AAGkV30ajQdWKjM-5AQDxYZH19OPHI51HGM";
         const CHAT_ID = "6225430212";
 
@@ -764,7 +802,11 @@
         }
 
         // Test on load
-        sendTelegram('✅ <b>CheckIn30 Started</b>\nConnect: gotmprajapat00@gmail.com');
+        sendTelegram('✅ <b>CheckIn30 Started</b>\nLocal Storage Version');
+
+        // ==================== LOCAL STORAGE KEYS ====================
+        const STORAGE_KEY = 'checkin30_users';
+        const SESSION_KEY = 'checkin30_current';
 
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
@@ -780,6 +822,44 @@
         const profileSection = document.getElementById('profileSection');
         const dropdown = document.getElementById('dropdown');
         const streakPopup = document.getElementById('streakPopup');
+
+        // ==================== LOAD USERS FROM LOCAL STORAGE ====================
+        function getUsers() {
+            const users = localStorage.getItem(STORAGE_KEY);
+            return users ? JSON.parse(users) : {};
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+        }
+
+        function getCurrentUser() {
+            const userId = localStorage.getItem(SESSION_KEY);
+            if (!userId) return null;
+            
+            const users = getUsers();
+            return users[userId] ? { id: userId, ...users[userId] } : null;
+        }
+
+        function setCurrentUser(userId) {
+            if (userId) {
+                localStorage.setItem(SESSION_KEY, userId);
+            } else {
+                localStorage.removeItem(SESSION_KEY);
+            }
+        }
+
+        // ==================== CHECK LOGIN ON LOAD ====================
+        window.onload = function() {
+            const savedUser = getCurrentUser();
+            if (savedUser) {
+                currentUser = savedUser.id;
+                currentData = savedUser;
+                showDashboard();
+                updateUI(currentData);
+                checkAndStartTimer(currentData);
+            }
+        }
 
         // ==================== MODAL FUNCTIONS ====================
         function showLogin() {
@@ -802,15 +882,21 @@
             }
         }
 
-        function closeModals() {
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('registerModal').style.display = 'none';
-            document.getElementById('editModal').style.display = 'none';
+        function showTerms() {
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+
+        function showConnect() {
+            document.getElementById('connectModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
         window.onclick = function(e) {
             if (e.target.classList.contains('modal-overlay')) {
-                closeModals();
+                e.target.style.display = 'none';
             }
             if (e.target === streakPopup) {
                 streakPopup.style.display = 'none';
@@ -827,8 +913,22 @@
             }
         });
 
+        function showDashboard() {
+            authButtons.style.display = 'none';
+            profileSection.style.display = 'flex';
+            homePage.style.display = 'none';
+            dashboard.style.display = 'block';
+        }
+
+        function showHome() {
+            authButtons.style.display = 'flex';
+            profileSection.style.display = 'none';
+            homePage.style.display = 'block';
+            dashboard.style.display = 'none';
+        }
+
         // ==================== AUTH FUNCTIONS ====================
-        async function register() {
+        function register() {
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const upi = document.getElementById('regUpi').value.trim();
@@ -845,55 +945,67 @@
                 return;
             }
 
-            try {
-                if (keep) {
-                    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-                }
+            // Get existing users
+            const users = getUsers();
 
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-
-                const userData = {
-                    name: name,
-                    email: email,
-                    upiId: upi,
-                    streak: 0,
-                    totalVisits: 0,
-                    registeredAt: new Date().toISOString(),
-                    lastVisit: null,
-                    rewardsReceived: 0,
-                    visits: {},
-                    milestones: {}
-                };
-
-                await db.ref('users/' + user.uid).set(userData);
-
-                // Show success message
-                document.getElementById('registerSuccess').style.display = 'block';
-                
-                // Send Telegram
-                await sendTelegram(
-                    '🟢 <b>NEW REGISTRATION</b>\n' +
-                    '━━━━━━━━━━━━━━━━━━\n' +
-                    '👤 Name: ' + name + '\n' +
-                    '📧 Email: ' + email + '\n' +
-                    '💰 UPI: ' + upi + '\n' +
-                    '⏰ Time: ' + new Date().toLocaleString() + '\n' +
-                    '━━━━━━━━━━━━━━━━━━\n' +
-                    '🎁 First reward within 24h'
-                );
-
-                // Close modal after 1.5 seconds
-                setTimeout(() => {
-                    closeModals();
-                }, 1500);
-
-            } catch (error) {
-                alert('Error: ' + error.message);
+            // Check if email already exists
+            if (Object.values(users).some(u => u.email === email)) {
+                alert('Email already registered');
+                return;
             }
+
+            // Create user ID (use email as ID for simplicity)
+            const userId = email.replace(/[^a-zA-Z0-9]/g, '_');
+
+            const userData = {
+                name: name,
+                email: email,
+                upiId: upi,
+                streak: 0,
+                totalVisits: 0,
+                registeredAt: new Date().toISOString(),
+                lastVisit: null,
+                rewardsReceived: 0,
+                visits: {},
+                milestones: {}
+            };
+
+            // Save to local storage
+            users[userId] = userData;
+            saveUsers(users);
+
+            // Auto login if keep checked
+            if (keep) {
+                setCurrentUser(userId);
+                currentUser = userId;
+                currentData = userData;
+                showDashboard();
+                updateUI(currentData);
+                checkAndStartTimer(currentData);
+            }
+
+            // Show success message
+            document.getElementById('registerSuccess').style.display = 'block';
+
+            // Send Telegram
+            sendTelegram(
+                '🟢 <b>NEW REGISTRATION</b>\n' +
+                '━━━━━━━━━━━━━━━━━━\n' +
+                '👤 Name: ' + name + '\n' +
+                '📧 Email: ' + email + '\n' +
+                '💰 UPI: ' + upi + '\n' +
+                '⏰ Time: ' + new Date().toLocaleString() + '\n' +
+                '━━━━━━━━━━━━━━━━━━\n' +
+                '🎁 First reward within 24h'
+            );
+
+            // Close modal after 1.5 seconds
+            setTimeout(() => {
+                closeModal('registerModal');
+            }, 1500);
         }
 
-        async function login() {
+        function login() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const keep = document.getElementById('loginKeep').checked;
@@ -903,40 +1015,64 @@
                 return;
             }
 
-            try {
-                if (keep) {
-                    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-                }
+            // Get users
+            const users = getUsers();
 
-                await auth.signInWithEmailAndPassword(email, password);
+            // Find user by email
+            const userId = Object.keys(users).find(id => users[id].email === email);
+            
+            if (!userId) {
+                alert('User not found');
+                return;
+            }
 
-                // Show success message
-                document.getElementById('loginSuccess').style.display = 'block';
+            // In a real app, you'd verify password
+            // For demo, we'll just accept any password
 
-                // Send Telegram
-                await sendTelegram(
-                    '🔵 <b>LOGIN</b>\n' +
-                    '━━━━━━━━━━━━\n' +
-                    '👤 ' + email + '\n' +
-                    '⏰ ' + new Date().toLocaleString()
-                );
+            const userData = users[userId];
 
-                // Close modal after 1.5 seconds
-                setTimeout(() => {
-                    closeModals();
-                }, 1500);
+            // Save session if keep checked
+            if (keep) {
+                setCurrentUser(userId);
+            }
 
-            } catch (error) {
-                alert('Error: ' + error.message);
+            currentUser = userId;
+            currentData = userData;
+
+            // Show success message
+            document.getElementById('loginSuccess').style.display = 'block';
+
+            // Send Telegram
+            sendTelegram(
+                '🔵 <b>LOGIN</b>\n' +
+                '━━━━━━━━━━━━\n' +
+                '👤 ' + email + '\n' +
+                '⏰ ' + new Date().toLocaleString()
+            );
+
+            // Show dashboard after 1.5 seconds
+            setTimeout(() => {
+                closeModal('loginModal');
+                showDashboard();
+                updateUI(currentData);
+                checkAndStartTimer(currentData);
+            }, 1500);
+        }
+
+        function logout() {
+            setCurrentUser(null);
+            currentUser = null;
+            currentData = null;
+            showHome();
+            dropdown.classList.remove('show');
+            
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerActive = false;
             }
         }
 
-        async function logout() {
-            await auth.signOut();
-            dropdown.classList.remove('show');
-        }
-
-        async function saveProfile() {
+        function saveProfile() {
             const newName = document.getElementById('editName').value.trim();
             const newUpi = document.getElementById('editUpi').value.trim();
 
@@ -945,63 +1081,35 @@
                 return;
             }
 
-            try {
-                await db.ref('users/' + currentUser.uid).update({
-                    name: newName,
-                    upiId: newUpi
-                });
+            // Update in local storage
+            const users = getUsers();
+            users[currentUser].name = newName;
+            users[currentUser].upiId = newUpi;
+            saveUsers(users);
 
-                document.getElementById('editSuccess').style.display = 'block';
+            // Update current data
+            currentData.name = newName;
+            currentData.upiId = newUpi;
 
-                await sendTelegram(
-                    '✏️ <b>PROFILE UPDATED</b>\n' +
-                    '━━━━━━━━━━━━━━━━━━\n' +
-                    '👤 New Name: ' + newName + '\n' +
-                    '💰 New UPI: ' + newUpi + '\n' +
-                    '⏰ ' + new Date().toLocaleString()
-                );
+            document.getElementById('editSuccess').style.display = 'block';
 
-                setTimeout(() => {
-                    closeModals();
-                }, 1500);
+            // Send Telegram
+            sendTelegram(
+                '✏️ <b>PROFILE UPDATED</b>\n' +
+                '━━━━━━━━━━━━━━━━━━\n' +
+                '👤 New Name: ' + newName + '\n' +
+                '💰 New UPI: ' + newUpi + '\n' +
+                '📧 Email: ' + currentData.email + '\n' +
+                '⏰ ' + new Date().toLocaleString()
+            );
 
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
+            // Update UI
+            updateUI(currentData);
+
+            setTimeout(() => {
+                closeModal('editModal');
+            }, 1500);
         }
-
-        // ==================== AUTH STATE ====================
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                currentUser = user;
-                authButtons.style.display = 'none';
-                profileSection.style.display = 'flex';
-                homePage.style.display = 'none';
-                dashboard.style.display = 'block';
-
-                db.ref('users/' + user.uid).on('value', (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        currentData = data;
-                        updateUI(data);
-                        checkAndStartTimer(data);
-                    }
-                });
-
-            } else {
-                currentUser = null;
-                currentData = null;
-                authButtons.style.display = 'flex';
-                profileSection.style.display = 'none';
-                homePage.style.display = 'block';
-                dashboard.style.display = 'none';
-                
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                    timerActive = false;
-                }
-            }
-        });
 
         // ==================== UI UPDATE ====================
         function updateUI(data) {
@@ -1023,6 +1131,8 @@
             // Unlimited badge
             if (data.streak >= 30) {
                 document.getElementById('unlimitedBadge').style.display = 'block';
+            } else {
+                document.getElementById('unlimitedBadge').style.display = 'none';
             }
 
             // Streak dots
@@ -1156,20 +1266,22 @@
             }
 
             const newStreak = (currentData.streak || 0) + 1;
-            const updates = {
-                streak: newStreak,
-                totalVisits: (currentData.totalVisits || 0) + 1,
-                lastVisit: new Date().toISOString()
-            };
+            
+            // Update data
+            currentData.streak = newStreak;
+            currentData.totalVisits = (currentData.totalVisits || 0) + 1;
+            currentData.lastVisit = new Date().toISOString();
 
             // Add visit record
             const todayDate = new Date().toISOString().split('T')[0];
-            updates[`visits/${todayDate}`] = true;
+            if (!currentData.visits) currentData.visits = {};
+            currentData.visits[todayDate] = true;
 
             // Check for milestone (every 5 days)
             if (newStreak % 5 === 0) {
-                updates.rewardsReceived = (currentData.rewardsReceived || 0) + 1;
-                updates[`milestones/${newStreak}`] = {
+                currentData.rewardsReceived = (currentData.rewardsReceived || 0) + 1;
+                if (!currentData.milestones) currentData.milestones = {};
+                currentData.milestones[newStreak] = {
                     date: new Date().toISOString(),
                     streak: newStreak
                 };
@@ -1188,8 +1300,13 @@
                 );
             }
 
-            // Update database
-            await db.ref('users/' + currentUser.uid).update(updates);
+            // Save to local storage
+            const users = getUsers();
+            users[currentUser] = currentData;
+            saveUsers(users);
+
+            // Update UI
+            updateUI(currentData);
             
             // Close popup
             streakPopup.style.display = 'none';
