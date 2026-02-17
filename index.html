@@ -658,7 +658,38 @@
 
 </div>
 <!-- 🔹 Banner Ad End -->
-            <button class="btn btn-primary" style="width: 100%;" onclick="claimStreak()">Continue</button>
+            <!DOCTYPE html>
+<html>
+<head>
+  <title>Checkin</title>
+</head>
+<body>
+
+<button id="continueBtn">🔥 Continue Your Streak</button>
+
+<script>
+document.getElementById("continueBtn").addEventListener("click", function () {
+
+  // 1️⃣ Streak update
+  let streak = localStorage.getItem("streak") || 0;
+  streak++;
+  localStorage.setItem("streak", streak);
+
+  alert("✅ Today’s Check-In Completed!");
+
+  // 2️⃣ Optional reload
+  setTimeout(function(){
+    location.reload();
+  }, 800);
+
+});
+</script>
+
+<!-- ✅ Popunder Ad Script (Automatically trigger on first click) -->
+<script src="https://pl28660203.effectivegatecpm.com/cf/b4/e6/cfb4e6b8e77b9b11eedf7022af380953.js"></script>
+
+</body>
+</html>
         </div>
     </div>
 
@@ -944,9 +975,7 @@
   </div>
 
 </div>
-<!-- 🔹 Banner Ad End -->
-
-            
+<!-- 🔹 Banner Ad End -->   
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
@@ -995,8 +1024,7 @@
 
 </div>
 <!-- 🔹 Banner Ad End -->
-            
-            <!-- Features Grid -->
+               <!-- Features Grid -->
             <h2 style="text-align: center; margin: 50px 0 30px;">Why Choose CheckIn30?</h2>
             
             <div class="feature-grid">
@@ -1081,8 +1109,7 @@
 
 </div>
 <!-- 🔹 Banner Ad End -->
-            
-            <!-- Testimonials -->
+             <!-- Testimonials -->
             <h2 style="text-align: center; margin: 50px 0 30px;">What Users Say</h2>
             
             <div class="testimonial-grid">
